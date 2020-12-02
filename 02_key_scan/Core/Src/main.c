@@ -99,11 +99,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
     key = KEY_Scan(0);
     switch(key)
     {
         case WKUP_PRES:			//控制LED0,LED1互斥点
-            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5);
+            IWDG_Feed();
             break;
         case KEY2_PRES:			//控制LED0翻转
             HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5);
