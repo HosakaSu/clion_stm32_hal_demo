@@ -106,7 +106,6 @@ CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj
  ../Core/Inc/main.h
  ../Core/Inc/stm32f1xx_hal_conf.h
  ../Core/Inc/stm32f1xx_it.h
- ../Core/Inc/usart.h
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h

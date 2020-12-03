@@ -105,7 +105,6 @@ CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_hal_msp.c.obj: ../Core/Src/stm32
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Core/Inc/main.h
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Core/Inc/stm32f1xx_hal_conf.h
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Core/Inc/stm32f1xx_it.h
-CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Core/Inc/usart.h
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 CMakeFiles/03_usartx.elf.dir/Core/Src/stm32f1xx_it.c.obj: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h

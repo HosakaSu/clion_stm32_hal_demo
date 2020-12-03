@@ -47,7 +47,6 @@
 
 /* USER CODE END PV */
 
-
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
@@ -66,8 +65,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t len = 0;
-  uint16_t times = 0;
+    char cha[20] = {0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,26 +98,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-      if(USART_RX_STA&0x8000)
-      {
-          len=USART_RX_STA&0x3fff;//得到此次接收到的数据长度
-          printf("\r\n您发送的消息为:\r\n");
-          HAL_UART_Transmit(&huart1,(uint8_t*)USART_RX_BUF,len,1000);	//发送接收到的数据
-          while(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_TC)!=SET);		//等待发送结束
-          printf("\r\n\r\n");//插入换行
-          USART_RX_STA=0;
-      }
-      else
-      {
-          times++;
-          if(times%5000==0)
-          {
-              printf("\r\n战舰STM32开发板 串口实验\r\n");
-          }
-          if(times%200==0)  printf("请输入数据,以回车键结束\r\n");
-          if(times%30==0)   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5);//闪烁LED,提示系统正在运行.
-          HAL_Delay(10);
-      }
+    HAL_GPIO_TogglePin(RUN_LED_GPIO_Port, RUN_LED_Pin);
+    printf("test\r\n");
+//    sprintf(cha, "Cortex-M3\r\n");
+//    HAL_UART_Transmit(&huart1, (uint8_t *)&cha, strlen(cha), 0xFFFF);
+    HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

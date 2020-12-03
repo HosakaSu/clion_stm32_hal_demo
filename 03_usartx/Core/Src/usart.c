@@ -17,28 +17,37 @@
   ******************************************************************************
   */
 
-
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-#pragma import(__use_no_semihosting)
-struct __FILE
-{
-    int handle;
 
-};
-
-FILE __stdout;
-//定义_sys_exit()以避免使用半主机模式
-void _sys_exit(int x)
-{
-    x = x;
-}
-
-uint8_t USART_RX_BUF[USART_REC_LEN];
-uint8_t aRxBuffer[RXBUFFERSIZE];
-uint16_t USART_RX_STA=0;       //接收状态标记
+//#if 1
+//#pragma import(__use_no_semihosting)
+//
+//struct __FILE
+//{
+//    int handle;
+//};
+//FILE __stdout;
+//void _sys_exit(int x)
+//{
+//    x = x;
+//}
+//
+//int fputc(int ch, FILE *f)
+//{
+//    while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
+//    USART1->DR = (uint8_t) ch;
+////    HAL_UART_Transmit(&huart1,(uint8_t *)&ch,1,0xffff);
+////    return(ch);
+//
+////    while(USART_GetFlagStatus(USART1, USART_FLAG_TC) != SET);
+////    USART_SendData(USART1, (unsigned char)ch);
+////    while(USART_GetFlagStatus(USART1, USART_FLAG_TC) != SET);
+////    return (ch);
+//}
+//#endif
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -47,7 +56,6 @@ UART_HandleTypeDef huart1;
 
 void MX_USART1_UART_Init(void)
 {
-
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -60,7 +68,6 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-    HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, RXBUFFERSIZE);//该函数会开启接收中断：标志位UART_IT_RXNE，并且设置接收缓冲以及接收缓冲接收最大数据量
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -90,6 +97,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+    /* USART1 interrupt Init */
+    HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
 
   /* USER CODE END USART1_MspInit 1 */
@@ -113,6 +123,8 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
 
+    /* USART1 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspDeInit 1 */
 
   /* USER CODE END USART1_MspDeInit 1 */
@@ -120,10 +132,24 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-int fputc(int ch, FILE *f)
+#ifdef __GNUC__
+/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+   set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE
 {
-    while((USART1->SR&0X40)==0);//循环发送,直到发送完毕
-    USART1->DR = (uint8_t) ch;
+    /* Place your implementation of fputc here */
+
+    /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
     return ch;
 }
 /* USER CODE END 1 */

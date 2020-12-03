@@ -56,7 +56,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -197,53 +197,21 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32f1xx.s).                    */
 /******************************************************************************/
 
-/* USER CODE BEGIN 1 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if(huart->Instance==USART1)//如果是串口1
-    {
-        if((USART_RX_STA&0x8000)==0)//接收未完成
-        {
-            if(USART_RX_STA&0x4000)//接收到了0x0d
-            {
-                if(aRxBuffer[0]!=0x0a)USART_RX_STA=0;//接收错误,重新开始
-                else USART_RX_STA|=0x8000;	//接收完成了
-            }
-            else //还没收到0X0D
-            {
-                if(aRxBuffer[0]==0x0d)USART_RX_STA|=0x4000;
-                else
-                {
-                    USART_RX_BUF[USART_RX_STA&0X3FFF]=aRxBuffer[0] ;
-                    USART_RX_STA++;
-                    if(USART_RX_STA>(USART_REC_LEN-1))USART_RX_STA=0;//接收数据错误,重新开始接收
-                }
-            }
-        }
-    }
-}
-
+/**
+  * @brief This function handles USART1 global interrupt.
+  */
 void USART1_IRQHandler(void)
 {
-    uint32_t timeout = 0;
+  /* USER CODE BEGIN USART1_IRQn 0 */
 
-    HAL_UART_IRQHandler(&huart1);
-    timeout = 0;
-    while(HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY)
-    {
-        timeout ++;
-        if(timeout > HAL_MAX_DELAY)
-        {
-            break;
-        }
-    }
-    timeout = 0;
-    while(HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, RXBUFFERSIZE) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
-    {
-        timeout ++;
-        if(timeout > HAL_MAX_DELAY) break;
-    }
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
+
+  /* USER CODE END USART1_IRQn 1 */
 }
+
+/* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -25,20 +25,16 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "stdio.h"
-/* USER CODE BEGIN Includes */
 
+/* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "stm32f1xx_hal.h"
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
-#define RXBUFFERSIZE   1
-#define USART_REC_LEN  			200  		//定义最大接收字节数 200
-#define EN_USART1_RX 			1			//使能（1）/禁止（0）串口1接收
-extern uint8_t USART_RX_BUF[USART_REC_LEN];
-extern uint8_t aRxBuffer[RXBUFFERSIZE];
-extern uint16_t USART_RX_STA;
+
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
